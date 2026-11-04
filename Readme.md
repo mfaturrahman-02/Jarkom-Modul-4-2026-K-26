@@ -184,6 +184,11 @@ https://docs.google.com/spreadsheets/d/1rLz4zUVn2UNdoxPdMNhNxYrD9JLPGYOn/edit?us
 
    **Aturan penggabungan:** netmask hasil gabungan adalah blok terkecil yang memuat **total isi** (jumlah ukuran blok semua subnet yang sudah tergabung). Jika total isi masih muat di blok yang ada, netmask tidak berubah (subnet kecil terserap), dan sel tersebut diberi warna abu-abu pada spreadsheet.
 
+  
+  Visualisasi pembagian wilayah CIDR dapat dilihat pada gambar berikut:
+
+  ![](./Assets/Topologi%20GNS3%20dan%20CIDR.png)
+
    - **Tahap 1 | Sayap Kiri:**
 
 | Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
@@ -239,9 +244,6 @@ https://docs.google.com/spreadsheets/d/1rLz4zUVn2UNdoxPdMNhNxYrD9JLPGYOn/edit?us
 
      > Catatan: ukuran blok ditentukan oleh jumlah **ukuran blok subnet** (setiap subnet menempati blok berpangkat 2), bukan jumlah host. Contohnya Sayap Kiri hanya butuh 1738 IP, tetapi total blok subnetnya 2644, sehingga harus /20 (bukan /21).
 
-     Visualisasi pembagian wilayah CIDR dapat dilihat pada gambar berikut:
-
-     ![](./Assets/Topologi%20GNS3%20dan%20CIDR.png)
 
 3. **Perhitungan Pembagian IP (Subnetting)**
 
@@ -303,6 +305,12 @@ https://docs.google.com/spreadsheets/d/1rLz4zUVn2UNdoxPdMNhNxYrD9JLPGYOn/edit?us
    **d. Menentukan Range IP Usable**
    * **IP Pertama:** Network ID + 1 $\rightarrow$ **`10.26.0.1`**.
    * **IP Terakhir:** Broadcast - 1 $\rightarrow$ **`10.26.3.254`**.
+
+   **e. Efisiensi Penggunaan CIDR Secara Keseluruhan**
+   * Seluruh topologi membutuhkan **2.739 host**: Sayap Kiri 1.738 host, Sayap Kanan 457 host, Sayap Bawah 416 host, serta Cyberia 128 host.
+   * Prefix induk `10.26.0.0/19` menyediakan $2^{13} = 8192$ alamat, atau **8190 alamat usable** setelah dikurangi network ID dan broadcast.
+   * Efisiensi penggunaan berdasarkan host adalah $2739/8190 \times 100\% \approx \mathbf{33,4\%}$, sehingga masih tersedia **5.451 alamat usable** untuk pengembangan.
+   * Jika dihitung berdasarkan blok alamat yang dialokasikan oleh seluruh subnet, totalnya **6.276 alamat** dari 8.192 alamat, atau sekitar **76,6%**. Perbedaan ini terjadi karena setiap subnet harus menggunakan ukuran blok berpangkat dua, sehingga sebagian alamat dialokasikan tetapi belum digunakan oleh host.
 
 ### Uji ping dari Alice ke semua client
 
