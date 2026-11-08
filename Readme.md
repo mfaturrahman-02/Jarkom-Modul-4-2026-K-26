@@ -176,11 +176,13 @@ uji `ping 8.8.8.8` pada Cyeberia dan Lain:
 <img width="1029" height="390" alt="image" src="https://github.com/user-attachments/assets/13762283-aee1-407f-83d7-a878580723f3" />
 
 ## gns3-CIDR
+Berbeda dengan CPT yang menggunakan VLSM, pada topologi GNS3 ini diterapkan metode **CIDR (Classless Inter-Domain Routing)**. Fokus utama metode ini adalah melakukan penggabungan rute (*route summarization*) untuk efisiensi tabel routing. Prefix jaringan yang digunakan adalah **192.224.x.x**.
+![](./Assets/Topologi%20GNS3.png)
+
 1. **Topologi GNS3**
 
    Berikut adalah desain topologi yang dibangun di GNS3. Topologi ini dibagi menjadi 3 wilayah utama (Sayap Kiri, Sayap Kanan, dan Sayap Bawah) yang terhubung ke satu router pusat (**Wired**). Selain itu, router **cyberia** (terhubung ke NAT) berada di atas Wired dengan satu LAN sendiri (A15) dan link ke Wired (A24).
 
-   ![](./Assets/Topologi%20GNS3.png)
    ![](./Assets/Topologi%20GNS3%20dengan%20keterangan%20subnet.png)
 
    | Wilayah | Isi | Router |
@@ -196,66 +198,67 @@ uji `ping 8.8.8.8` pada Cyeberia dan Lain:
 
    **Aturan penggabungan:** netmask hasil gabungan adalah blok terkecil yang memuat **total isi** (jumlah ukuran blok semua subnet yang sudah tergabung). Jika total isi masih muat di blok yang ada, netmask tidak berubah (subnet kecil terserap), dan sel tersebut diberi warna abu-abu pada spreadsheet.
 
-  
-  Visualisasi pembagian wilayah CIDR dapat dilihat pada gambar berikut:
-
-  ![](./Assets/Topologi%20GNS3%20dan%20CIDR.png)
-
    - **Tahap 1 | Sayap Kiri:**
 
-| Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| B1 | A8 | /23 | A9 | /26 | /22 | 576 |
-| B2 | A22 | /30 | A7 | /22 | /21 | 1028 |
-| C1 | B2 | /21 | A11 | /29 | /21 | 1036 |
-| D1 | C1 | /21 | B1 | /22 | /21 | 1612 |
-| E1 | D1 | /21 | A10 | /22 | /20 | 2636 |
-| F1 | E1 | /20 | A25 | /29 | /20 | 2644 |
+   | Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
+   |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+   | B1 | A8 | /23 | A9 | /26 | /22 | 576 |
+   | B2 | A22 | /30 | A7 | /22 | /21 | 1028 |
+   | C1 | B2 | /21 | A11 | /29 | /21 | 1036 |
+   | D1 | C1 | /21 | B1 | /22 | /21 | 1612 |
+   | E1 | D1 | /21 | A10 | /22 | /20 | 2636 |
+   | F1 | E1 | /20 | A25 | /29 | /20 | 2644 |
 
    - **Tahap 2 | Sayap Kanan:**
 
-| Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| B4 | A13 | /26 | A14 | /24 | /23 | 320 |
-| C2 | B4 | /23 | A12 | /24 | /22 | 576 |
-| D2 | C2 | /22 | A23 | /30 | /22 | 580 |
+   | Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
+   |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+   | B4 | A13 | /26 | A14 | /24 | /23 | 320 |
+   | C2 | B4 | /23 | A12 | /24 | /22 | 576 |
+   | D2 | C2 | /22 | A23 | /30 | /22 | 580 |
 
    - **Tahap 3 | Sayap Bawah:**
 
-| Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| B3 | A1 | /26 | A16 | /30 | /25 | 68 |
-| C3 | B3 | /25 | A2 | /27 | /25 | 100 |
-| D3 | C3 | /25 | A17 | /30 | /25 | 104 |
-| E2 | D3 | /25 | A3 | /29 | /25 | 112 |
-| F2 | E2 | /25 | A18 | /30 | /25 | 116 |
-| G1 | F2 | /25 | A4 | /26 | /24 | 180 |
-| H1 | G1 | /24 | A19 | /30 | /24 | 184 |
-| I1 | H1 | /24 | A5 | /25 | /23 | 312 |
-| J1 | I1 | /23 | A20 | /30 | /23 | 316 |
-| K1 | J1 | /23 | A6 | /24 | /22 | 572 |
-| K2 | K1 | /22 | A21 | /30 | /22 | 576 |
+   | Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
+   |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+   | B3 | A1 | /26 | A16 | /30 | /25 | 68 |
+   | C3 | B3 | /25 | A2 | /27 | /25 | 100 |
+   | D3 | C3 | /25 | A17 | /30 | /25 | 104 |
+   | E2 | D3 | /25 | A3 | /29 | /25 | 112 |
+   | F2 | E2 | /25 | A18 | /30 | /25 | 116 |
+   | G1 | F2 | /25 | A4 | /26 | /24 | 180 |
+   | H1 | G1 | /24 | A19 | /30 | /24 | 184 |
+   | I1 | H1 | /24 | A5 | /25 | /23 | 312 |
+   | J1 | I1 | /23 | A20 | /30 | /23 | 316 |
+   | K1 | J1 | /23 | A6 | /24 | /22 | 572 |
+   | K2 | K1 | /22 | A21 | /30 | /22 | 576 |
 
    - **Tahap 4 | Gabungan seluruh sayap** (tiap sayap dihitung sebesar blok netmask akhirnya):
 
-| Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| L1 | K2 | /22 | D2 | /22 | /21 | 2048 |
-| L2 | L1 | /21 | F1 | /20 | /19 | 6144 |
-| L3 | L2 | /19 | A24 | /30 | /19 | 6148 |
-| L4 | L3 | /19 | A15 | /25 | /19 | 6276 |
+   | Subnet | Gabungan dari (1) | Netmask | Gabungan dari (2) | Netmask | Netmask Akhir | Total Isi (IP) |
+   |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+   | L1 | K2 | /22 | D2 | /22 | /21 | 2048 |
+   | L2 | L1 | /21 | F1 | /20 | /19 | 6144 |
+   | L3 | L2 | /19 | A24 | /30 | /19 | 6148 |
+   | L4 | L3 | /19 | A15 | /25 | /19 | 6276 |
+
+   ![](./Assets/Gabungan%20IP%20-%20CIDR%20Tahap%201.png)
+   ![](./Assets/Gabungan%20IP%20-%20CIDR%20Tahap%202.png)
 
    - **Hasil Akhir Penggabungan (Supernet Utama):**
      Berdasarkan ukuran blok seluruh subnet pada tiap wilayah, didapatkan 3 Blok Supernet Utama yang didaftarkan pada router pusat (Wired), ditambah A15 dan A24 di sisi cyberia:
 
-     * **Sayap Kiri (1738 IP dibutuhkan, total blok 2644):** Membutuhkan blok **/20**. Dialokasikan `10.26.0.0/20`.
-     * **Sayap Kanan (457 IP dibutuhkan, total blok 580):** Membutuhkan blok **/22**. Dialokasikan `10.26.16.0/22`.
-     * **Sayap Bawah (416 IP dibutuhkan, total blok 576):** Membutuhkan blok **/22**. Dialokasikan `10.26.20.0/22`.
-     * **Cyberia (A15 dan A24):** A15 `10.26.24.0/25` dan A24 `10.26.24.128/30`.
-     * **Seluruh topologi:** teragregasi menjadi **`10.26.0.0/19`**. Pada router cyberia cukup satu route `10.26.0.0/19` menuju Wired.
+     * **Sayap Kiri (1738 IP dibutuhkan, total blok 2644):** Membutuhkan blok **/20**. Dialokasikan `192.224.0.0/20`.
+     * **Sayap Kanan (457 IP dibutuhkan, total blok 580):** Membutuhkan blok **/22**. Dialokasikan `192.224.16.0/22`.
+     * **Sayap Bawah (416 IP dibutuhkan, total blok 576):** Membutuhkan blok **/22**. Dialokasikan `192.224.20.0/22`.
+     * **Cyberia (A15 dan A24):** A15 `192.224.24.0/25` dan A24 `192.224.24.128/30`.
+     * **Seluruh topologi:** teragregasi menjadi **`192.224.0.0/19`**. Pada router cyberia cukup satu route `192.224.0.0/19` menuju Wired.
 
      > Catatan: ukuran blok ditentukan oleh jumlah **ukuran blok subnet** (setiap subnet menempati blok berpangkat 2), bukan jumlah host. Contohnya Sayap Kiri hanya butuh 1738 IP, tetapi total blok subnetnya 2644, sehingga harus /20 (bukan /21).
 
+     Visualisasi pembagian wilayah CIDR dapat dilihat pada gambar berikut:
+
+     ![](./Assets/Topologi%20GNS3%20dan%20CIDR.png)
 
 3. **Perhitungan Pembagian IP (Subnetting)**
 
@@ -263,31 +266,33 @@ uji `ping 8.8.8.8` pada Cyeberia dan Lain:
 
    | Sayap | Subnet | Kebutuhan Host | CIDR | Network ID | Broadcast | Range IP Usable | Catatan |
    |:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-   | **KIRI** | **A10** | 881 | **/22** | **10.26.0.0** | 10.26.3.255 | 10.26.0.1 - 10.26.3.254 | Buddy Pair |
-   | (Blok: 10.26.0.0/20) | **A7** | 514 | **/22** | **10.26.4.0** | 10.26.7.255 | 10.26.4.1 - 10.26.7.254 | dg A10 |
-   |  | **A8** | 301 | **/23** | **10.26.8.0** | 10.26.9.255 | 10.26.8.1 - 10.26.9.254 |  |
-   |  | **A9** | 32 | **/26** | **10.26.10.0** | 10.26.10.63 | 10.26.10.1 - 10.26.10.62 |  |
-   |  | **A11** | 4 | **/29** | **10.26.10.64** | 10.26.10.71 | 10.26.10.65 - 10.26.10.70 | Buddy Pair |
-   |  | **A25** | 4 | **/29** | **10.26.10.72** | 10.26.10.79 | 10.26.10.73 - 10.26.10.78 | dg A11 |
-   |  | **A22** | 2 | **/30** | **10.26.10.80** | 10.26.10.83 | 10.26.10.81 - 10.26.10.82 | WAN |
-   | **KANAN** | **A14** | 254 | **/24** | **10.26.16.0** | 10.26.16.255 | 10.26.16.1 - 10.26.16.254 | Buddy Pair |
-   | (Blok: 10.26.16.0/22) | **A12** | 143 | **/24** | **10.26.17.0** | 10.26.17.255 | 10.26.17.1 - 10.26.17.254 | dg A14 |
-   |  | **A13** | 58 | **/26** | **10.26.18.0** | 10.26.18.63 | 10.26.18.1 - 10.26.18.62 |  |
-   |  | **A23** | 2 | **/30** | **10.26.18.64** | 10.26.18.67 | 10.26.18.65 - 10.26.18.66 | WAN |
-   | **BAWAH** | **A6** | 207 | **/24** | **10.26.20.0** | 10.26.20.255 | 10.26.20.1 - 10.26.20.254 |  |
-   | (Blok: 10.26.20.0/22) | **A5** | 84 | **/25** | **10.26.21.0** | 10.26.21.127 | 10.26.21.1 - 10.26.21.126 |  |
-   |  | **A1** | 62 | **/26** | **10.26.21.128** | 10.26.21.191 | 10.26.21.129 - 10.26.21.190 | Buddy Pair |
-   |  | **A4** | 33 | **/26** | **10.26.21.192** | 10.26.21.255 | 10.26.21.193 - 10.26.21.254 | dg A1 |
-   |  | **A2** | 15 | **/27** | **10.26.22.0** | 10.26.22.31 | 10.26.22.1 - 10.26.22.30 |  |
-   |  | **A3** | 3 | **/29** | **10.26.22.32** | 10.26.22.39 | 10.26.22.33 - 10.26.22.38 |  |
-   |  | **A16** | 2 | **/30** | **10.26.22.40** | 10.26.22.43 | 10.26.22.41 - 10.26.22.42 | WAN |
-   |  | **A17** | 2 | **/30** | **10.26.22.44** | 10.26.22.47 | 10.26.22.45 - 10.26.22.46 | WAN |
-   |  | **A18** | 2 | **/30** | **10.26.22.48** | 10.26.22.51 | 10.26.22.49 - 10.26.22.50 | WAN |
-   |  | **A19** | 2 | **/30** | **10.26.22.52** | 10.26.22.55 | 10.26.22.53 - 10.26.22.54 | WAN |
-   |  | **A20** | 2 | **/30** | **10.26.22.56** | 10.26.22.59 | 10.26.22.57 - 10.26.22.58 | WAN |
-   |  | **A21** | 2 | **/30** | **10.26.22.60** | 10.26.22.63 | 10.26.22.61 - 10.26.22.62 | WAN |
-   | **CYBERIA** | **A15** | 126 | **/25** | **10.26.24.0** | 10.26.24.127 | 10.26.24.1 - 10.26.24.126 |  |
-   | (Blok: 10.26.24.0/25 & 10.26.24.128/30) | **A24** | 2 | **/30** | **10.26.24.128** | 10.26.24.131 | 10.26.24.129 - 10.26.24.130 | WAN |
+   | **KIRI** | **A10** | 881 | **/22** | **192.224.0.0** | 192.224.3.255 | 192.224.0.1 - 192.224.3.254 | Buddy Pair |
+   | (Blok: 192.224.0.0/20) | **A7** | 514 | **/22** | **192.224.4.0** | 192.224.7.255 | 192.224.4.1 - 192.224.7.254 | dg A10 |
+   |  | **A8** | 301 | **/23** | **192.224.8.0** | 192.224.9.255 | 192.224.8.1 - 192.224.9.254 |  |
+   |  | **A9** | 32 | **/26** | **192.224.10.0** | 192.224.10.63 | 192.224.10.1 - 192.224.10.62 |  |
+   |  | **A11** | 4 | **/29** | **192.224.10.64** | 192.224.10.71 | 192.224.10.65 - 192.224.10.70 | Buddy Pair |
+   |  | **A25** | 4 | **/29** | **192.224.10.72** | 192.224.10.79 | 192.224.10.73 - 192.224.10.78 | dg A11 |
+   |  | **A22** | 2 | **/30** | **192.224.10.80** | 192.224.10.83 | 192.224.10.81 - 192.224.10.82 | WAN |
+   | **KANAN** | **A14** | 254 | **/24** | **192.224.16.0** | 192.224.16.255 | 192.224.16.1 - 192.224.16.254 | Buddy Pair |
+   | (Blok: 192.224.16.0/22) | **A12** | 143 | **/24** | **192.224.17.0** | 192.224.17.255 | 192.224.17.1 - 192.224.17.254 | dg A14 |
+   |  | **A13** | 58 | **/26** | **192.224.18.0** | 192.224.18.63 | 192.224.18.1 - 192.224.18.62 |  |
+   |  | **A23** | 2 | **/30** | **192.224.18.64** | 192.224.18.67 | 192.224.18.65 - 192.224.18.66 | WAN |
+   | **BAWAH** | **A6** | 207 | **/24** | **192.224.20.0** | 192.224.20.255 | 192.224.20.1 - 192.224.20.254 |  |
+   | (Blok: 192.224.20.0/22) | **A5** | 84 | **/25** | **192.224.21.0** | 192.224.21.127 | 192.224.21.1 - 192.224.21.126 |  |
+   |  | **A1** | 62 | **/26** | **192.224.21.128** | 192.224.21.191 | 192.224.21.129 - 192.224.21.190 | Buddy Pair |
+   |  | **A4** | 33 | **/26** | **192.224.21.192** | 192.224.21.255 | 192.224.21.193 - 192.224.21.254 | dg A1 |
+   |  | **A2** | 15 | **/27** | **192.224.22.0** | 192.224.22.31 | 192.224.22.1 - 192.224.22.30 |  |
+   |  | **A3** | 3 | **/29** | **192.224.22.32** | 192.224.22.39 | 192.224.22.33 - 192.224.22.38 |  |
+   |  | **A16** | 2 | **/30** | **192.224.22.40** | 192.224.22.43 | 192.224.22.41 - 192.224.22.42 | WAN |
+   |  | **A17** | 2 | **/30** | **192.224.22.44** | 192.224.22.47 | 192.224.22.45 - 192.224.22.46 | WAN |
+   |  | **A18** | 2 | **/30** | **192.224.22.48** | 192.224.22.51 | 192.224.22.49 - 192.224.22.50 | WAN |
+   |  | **A19** | 2 | **/30** | **192.224.22.52** | 192.224.22.55 | 192.224.22.53 - 192.224.22.54 | WAN |
+   |  | **A20** | 2 | **/30** | **192.224.22.56** | 192.224.22.59 | 192.224.22.57 - 192.224.22.58 | WAN |
+   |  | **A21** | 2 | **/30** | **192.224.22.60** | 192.224.22.63 | 192.224.22.61 - 192.224.22.62 | WAN |
+   | **CYBERIA** | **A15** | 126 | **/25** | **192.224.24.0** | 192.224.24.127 | 192.224.24.1 - 192.224.24.126 |  |
+   | (Blok: 192.224.24.0/25 & 192.224.24.128/30) | **A24** | 2 | **/30** | **192.224.24.128** | 192.224.24.131 | 192.224.24.129 - 192.224.24.130 | WAN |
+
+   ![](./Assets/IP%20Pembagian%20IP%20-%20CIDR.png)
 
    #### **Studi Kasus Perhitungan: Subnet A10**
    Berikut adalah contoh detail langkah-langkah mendapatkan Prefix, Network ID, Broadcast, dan Range IP untuk **Subnet A10** (Sayap Kiri):
@@ -306,23 +311,17 @@ uji `ping 8.8.8.8` pada Cyeberia dan Lain:
 
    **c. Menentukan Network ID (NID) & Broadcast**
    * **Network ID (Awal):**
-       Karena A10 adalah subnet pertama di Sayap Kiri (Block 10.26.0.0/20), maka NID dimulai dari **`10.26.0.0`**.
+       Karena A10 adalah subnet pertama di Sayap Kiri (Block 192.224.0.0/20), maka NID dimulai dari **`192.224.0.0`**.
    * **Next Network (Batas Atas):**
        NID Awal + Block Size (di oktet ke-3) $\rightarrow$ $0 + 4 = 4$.
-       Jadi subnet berikutnya dimulai di `10.26.4.0`.
+       Jadi subnet berikutnya dimulai di `192.224.4.0`.
    * **Broadcast Address (Akhir):**
-       Satu angka sebelum *Next Network* (`10.26.4.0`).
-       Maka Broadcastnya adalah **`10.26.3.255`**.
+       Satu angka sebelum *Next Network* (`192.224.4.0`).
+       Maka Broadcastnya adalah **`192.224.3.255`**.
 
    **d. Menentukan Range IP Usable**
-   * **IP Pertama:** Network ID + 1 $\rightarrow$ **`10.26.0.1`**.
-   * **IP Terakhir:** Broadcast - 1 $\rightarrow$ **`10.26.3.254`**.
-
-   **e. Efisiensi Penggunaan CIDR Secara Keseluruhan**
-   * Seluruh topologi membutuhkan **2.739 host**: Sayap Kiri 1.738 host, Sayap Kanan 457 host, Sayap Bawah 416 host, serta Cyberia 128 host.
-   * Prefix induk `10.26.0.0/19` menyediakan $2^{13} = 8192$ alamat, atau **8190 alamat usable** setelah dikurangi network ID dan broadcast.
-   * Efisiensi penggunaan berdasarkan host adalah $2739/8190 \times 100\% \approx \mathbf{33,4\%}$, sehingga masih tersedia **5.451 alamat usable** untuk pengembangan.
-   * Jika dihitung berdasarkan blok alamat yang dialokasikan oleh seluruh subnet, totalnya **6.276 alamat** dari 8.192 alamat, atau sekitar **76,6%**. Perbedaan ini terjadi karena setiap subnet harus menggunakan ukuran blok berpangkat dua, sehingga sebagian alamat dialokasikan tetapi belum digunakan oleh host.
+   * **IP Pertama:** Network ID + 1 $\rightarrow$ **`192.224.0.1`**.
+   * **IP Terakhir:** Broadcast - 1 $\rightarrow$ **`192.224.3.254`**.
 
 ### Uji ping dari Alice ke semua client
 
