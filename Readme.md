@@ -163,6 +163,18 @@ https://docs.google.com/spreadsheets/d/1rLz4zUVn2UNdoxPdMNhNxYrD9JLPGYOn/edit?us
 ![](./Assets/Uji-Ping-Lin-2.png)
 ![](./Assets/Uji-Ping-Lin-3.png)
 
+**(Revisi)**
+
+uji `ping 8.8.8.8` pada Cyeberia dan Lain:
+
+`Cyeberia`:
+
+<img width="855" height="250" alt="image" src="https://github.com/user-attachments/assets/888335b4-bb9d-49c2-80bd-4133badbd077" />
+
+`Lain`:
+
+<img width="1029" height="390" alt="image" src="https://github.com/user-attachments/assets/13762283-aee1-407f-83d7-a878580723f3" />
+
 ## gns3-CIDR
 1. **Topologi GNS3**
 
