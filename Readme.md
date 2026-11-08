@@ -179,6 +179,9 @@ uji `ping 8.8.8.8` pada Cyeberia dan Lain:
 Berbeda dengan CPT yang menggunakan VLSM, pada topologi GNS3 ini diterapkan metode **CIDR (Classless Inter-Domain Routing)**. Fokus utama metode ini adalah melakukan penggabungan rute (*route summarization*) untuk efisiensi tabel routing. Prefix jaringan yang digunakan adalah **192.224.x.x**.
 ![](./Assets/Topologi%20GNS3.png)
 
+**Revisi**
+Terdapat revisi pada penggunaan prefix ip kelompok yang awalnya itu 10.26.x.x ini salah seharusnya prefix ip kelompom saya itu 192.224.x.x
+
 1. **Topologi GNS3**
 
    Berikut adalah desain topologi yang dibangun di GNS3. Topologi ini dibagi menjadi 3 wilayah utama (Sayap Kiri, Sayap Kanan, dan Sayap Bawah) yang terhubung ke satu router pusat (**Wired**). Selain itu, router **cyberia** (terhubung ke NAT) berada di atas Wired dengan satu LAN sendiri (A15) dan link ke Wired (A24).
